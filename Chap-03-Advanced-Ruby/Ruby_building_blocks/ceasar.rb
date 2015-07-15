@@ -1,8 +1,11 @@
 def ceasar(str,shift)
   
-  
+  #Cases to be considered
   # a - z is 97 - 122
   # A - Z is 65 - 90
+  #everything else
+  
+  shift = shift % 25 # reduces shifts greater than 25 
   
   str.length.times do |x|
     
@@ -10,26 +13,24 @@ def ceasar(str,shift)
     
       case cipher
         
-      when 65..90
+      when 65..90  # handles Upper case letters
       
-      actual_shift =  shift
+      actual_shift =  shift #copy of the original shift which will be modified in the loop
+       
       
-        while cipher != 90 && actual_shift != 0
+        while cipher != 90 && actual_shift != 0 #condition to check reach of last valid char && check end of actual shift
         
         cipher += 1  
         actual_shift -= 1
-        # puts cipher
       
         end
         
-        actual_shift = actual_shift % 25
-        cipher = 64 + actual_shift if cipher == 90
         
-        # puts "--#{cipher}"
+        cipher = 64 + actual_shift if cipher == 90 #add remaining shifts to the 1st valid char
     
         str[x] = cipher.chr 
       
-      when 97..122
+      when 97..122 #handles lower case letters
     
       actual_shift =  shift
     
@@ -38,17 +39,15 @@ def ceasar(str,shift)
         cipher += 1  
         actual_shift -= 1
         
-        # puts cipher
         end
         
-        actual_shift = actual_shift % 25
         cipher = 96 + actual_shift if cipher == 122
     
-        # puts cipher
         
         str[x] = cipher.chr 
         
-      else
+      else # handles everything other than char
+        
         "Do nothing"
       
       end
@@ -61,6 +60,6 @@ def ceasar(str,shift)
 end
 
 puts ceasar("What a string!",5)
-puts ""
+
   
   
