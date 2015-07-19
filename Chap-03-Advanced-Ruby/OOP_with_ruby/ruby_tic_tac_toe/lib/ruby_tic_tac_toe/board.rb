@@ -27,7 +27,7 @@ module RubyTicTacToe
     end
     
     def draw?
-      arr = grid.flatten.map {|value| value}
+      arr = grid.flatten.map {|cell| cell.value}
       arr.none_empty?
     end
     
@@ -49,6 +49,12 @@ module RubyTicTacToe
     
     def pos_values_map array
       array.map {|obj| obj.value}
+    end
+    
+    def formatted_grid
+          grid.each do |row|
+            puts row.map { |cell| cell.value.empty? ? "_" : cell.value }.join(" ")
+          end
     end
       
       
