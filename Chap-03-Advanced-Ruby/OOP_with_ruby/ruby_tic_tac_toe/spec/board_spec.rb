@@ -42,6 +42,15 @@ module RubyTicTacToe
    it "returns :draw when winner? is false and draw? is true"
    it "returns false when both winner? and draw are false"
    
+   it "returns true for same row same values" do
+     x_cell = Cell.new("x")
+     y_cell = Cell.new("y")
+     empty = Cell.new()
+     grid = [[x_cell,x_cell,x_cell],[x_cell,y_cell,x_cell],[y_cell,empty,y_cell]]
+     board = Board.new(grid: grid)
+     expect(board.winner?).to eq true
+   end
+   
 end
 
 end
