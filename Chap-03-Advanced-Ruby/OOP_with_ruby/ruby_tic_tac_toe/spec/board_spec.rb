@@ -1,5 +1,5 @@
 require_relative 'spec_helper.rb'
-require_relative '../lib/ruby_tic_tac_toe/cell.rb'
+# require_relative '../lib/ruby_tic_tac_toe/cell.rb'
 require 'rspec'
 include RSpec
 
@@ -33,6 +33,15 @@ module RubyTicTacToe
      expect(board.get_cell(0,0).value).to eq "0*0"
    end
   
+   it "returns :winner when winner? is true" do
+     board = Board.new
+     board.stub(:winner?).and_return(true)
+     expect(board.game_over).to eq :winner
+   end
+   
+   it "returns :draw when winner? is false and draw? is true"
+   it "returns false when both winner? and draw are false"
+   
 end
 
 end
