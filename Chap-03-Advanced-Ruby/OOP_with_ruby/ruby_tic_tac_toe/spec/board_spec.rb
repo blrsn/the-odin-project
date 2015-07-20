@@ -6,9 +6,9 @@ include RSpec
 module RubyTicTacToe
   
   describe Board do
-  it "it can be initialized with a hash having grid key" do
-    expect {Board.new(grid: "grid")}.to_not raise_error
-  end
+  # it "it can be initialized with a hash having grid key" do
+#     expect {Board.new(grid: "grid")}.to_not raise_error
+#   end
   
   it "has three rows by default" do
     board = Board.new
@@ -21,11 +21,11 @@ module RubyTicTacToe
     end
   end
   
-  it "#get_cell" do
-    grid = [["","",""],["","","1*2"],["","",""]]
-    board = Board.new(grid: grid)
-    expect(board.get_cell(1,2)).to eq "1*2"
-  end
+  # it "#get_cell" do
+#     grid = [["","",""],["","","1*2"],["","",""]]
+#     board = Board.new(grid: grid)
+#     expect(board.get_cell(1,2)).to eq "1*2"
+#   end
   
   it "#set_cell" do
      board = Board.new
@@ -42,14 +42,14 @@ module RubyTicTacToe
    it "returns :draw when winner? is false and draw? is true"
    it "returns false when both winner? and draw are false"
    
-   it "returns true for same row same values" do
-     x_cell = Cell.new("x")
-     y_cell = Cell.new("y")
-     empty = Cell.new()
-     grid = [[x_cell,x_cell,x_cell],[x_cell,y_cell,x_cell],[y_cell,empty,y_cell]]
-     board = Board.new(grid: grid)
-     expect(board.winner?).to eq true
-   end
+   # it "returns true for same row same values" do
+#      x_cell = Cell.new("x")
+#      y_cell = Cell.new("y")
+#      empty = Cell.new()
+#      grid = [[x_cell,x_cell,x_cell],[x_cell,y_cell,x_cell],[y_cell,empty,y_cell]]
+#      board = Board.new(grid: grid)
+#      expect(board.winner?).to eq true
+#    end
    
 end
 
