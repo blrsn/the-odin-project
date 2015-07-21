@@ -1,7 +1,7 @@
 class Code
   attr_reader :value
   
-  def set_code input
+  def set_code input # input is an array of length 4
     
     @value = input
     
@@ -31,7 +31,7 @@ end
 if __FILE__ == $0
   
   the_code = Code.new
-  the_code.set_code 1234
-  p the_code.value
+  the_code.set_code [1,2,3,4]
+  p hits 
   
 end
