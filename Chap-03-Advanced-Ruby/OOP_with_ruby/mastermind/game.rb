@@ -1,4 +1,5 @@
 require_relative 'code.rb'
+require_relative 'mastermind.rb'
 
   class Game
     
@@ -60,10 +61,42 @@ require_relative 'code.rb'
     end
     
     def play
-      p "Enter the code you like to set"
+      print "There are 2 gameplays\n"
+      print "1 - You set code and mastermind tries to crack code\n"
+      print "2 - Mastermind sets code, you try to crack code\n"
+      print "Select 1 or 2\n"
+      choice = gets.chomp
       @thecode = Code.new
+      themaster = Mastermind.new
+      
+      
+      case choice
+      when "1"
+        
       code_array = conv_code(val_code)
       @thecode.set_code code_array
+      p "Code set successfully"
+      
+      j=0
+      while j != 12
+      # get_guess
+      themaster.set_code
+      @guess = themaster.code
+      history_maker
+      formatted_history
+      break if game_over
+      j += 1
+      gets
+      end
+        
+      when "2"
+      
+      #computer sets random code
+      
+      themaster.set_code
+      
+      # code_array = conv_code(val_code)
+      @thecode.set_code themaster.code
       p "Code set successfully"
       
       j=0
@@ -74,6 +107,12 @@ require_relative 'code.rb'
       break if game_over
       j += 1
       end
+      
+      else
+        
+        p "Exiting...Entered wrong cod"
+      
+    end
       
     end
     

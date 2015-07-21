@@ -2,7 +2,7 @@ class Mastermind
   CODE_LENGTH = 4
   attr_reader :code
   
-  def set_code
+  def set_code 
     @code = []
     CODE_LENGTH.times {|t| @code << rand(1..6)}
   end
