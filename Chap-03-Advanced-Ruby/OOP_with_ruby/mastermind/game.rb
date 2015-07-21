@@ -2,12 +2,13 @@ require_relative 'code.rb'
 
   class Game
     
-    attr_accessor :guess_count,:guess,:guess_history
+    attr_accessor :guess_count,:guess,:guess_history,:match_history
   
     def initialize 
       @guess_count = 1
       @thecode = Code.new
       @guess_history = []
+      @match_history = []
     end
   
   
@@ -16,6 +17,10 @@ require_relative 'code.rb'
         str_arr = string.split('')
         str_arr.collect! {|ele| ele.to_i}
 
+    end
+    
+    def to_str array
+      array.reduce("") {|sum,ele| sum = sum + ele.to_s}
     end
     
     def val_code  #gets input and checks for valid length
@@ -32,29 +37,44 @@ require_relative 'code.rb'
     end
       
   
-    def game_over guess
-      while guess_count != 13
-      end
-        
-    
+    def game_over
+      match_history.any? {|ele| ele=="#{'* ' * 4 }" }
     end
     
     def get_guess
       p "Enter your guess no. #{@guess_count}"
-      @guess = gets.chomp
+      @guess = conv_code(gets.chomp)
       @guess_count += 1
     end
 
-    def convert_guess 
+    def history_maker
+      guess_history << guess
+      match_history << "#{'* ' * @thecode.hits(guess)}#{'|' * @thecode.close(guess)}" 
+    end
+    
+    def formatted_history
+      p "Guesses so far"
+      guess_history.each_with_index do |gue,i|
+      puts "#{to_str(gue)} #{match_history[i]}"
+      end
     end
     
     def play
       p "Enter the code you like to set"
-      thecode = Code.new
+      @thecode = Code.new
       code_array = conv_code(val_code)
-      # p "code_array #{code_array}"
-      thecode.set_code code_array
-      p "The code #{thecode.value} has been set successfully"
+      @thecode.set_code code_array
+      p "Code set successfully"
+      
+      j=0
+      while j != 12
+      get_guess 
+      history_maker
+      formatted_history
+      break if game_over
+      j += 1
+      end
+      
     end
     
   end

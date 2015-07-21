@@ -18,6 +18,7 @@ class Code
     value.each_with_index do |ele,i|
        if ele+1 == guess || ele-1 == guess
          count +=1
+       end
      end
      count
   end
