@@ -1,5 +1,6 @@
 @all_lines = File.readlines "wordlist.txt"
 @guess_count = 8
+@wrong_guess = []
 
 def sel_code(code="")
 while code.length < 5 || code.length > 12
@@ -18,7 +19,10 @@ def check_code
   matched_pos = []
   @my_code.split('').each_with_index {|letter,ind| matched_pos << ind if letter == @guess} 
   
-  @guess_count -= 1 if matched_pos.empty?
+  if matched_pos.empty?
+     @guess_count -= 1 
+     @wrong_guess << @guess
+   end
   matched_pos
 end
 
@@ -42,7 +46,7 @@ end
 # run starts
 
 p "Crack the word"
-p @my_code
+# p @my_code
 
 @disp_arr = []
 @my_code.length.times{|t| @disp_arr << "_"}
@@ -53,8 +57,9 @@ while @guess_count > 0
   @guess = get_code
   # p @guess
   match_arr = check_code
-  p match_arr
+  # p match_arr
   disp_change(match_arr)
+  puts "wrong guesses so far: #{@wrong_guess.join(" ")}" if !(@wrong_guess.empty?)
   break if game_over?(@disp_arr)
 end
 
