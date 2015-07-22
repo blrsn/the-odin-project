@@ -29,6 +29,18 @@ def format_leg(zipcode)
   
 end
 
+def save_thank_you(index,personal_letter)
+  
+  Dir.mkdir("output") unless Dir.exists? "output"
+ 
+  filename = "thanks_#{index}.html"
+ 
+  File.open("output/#{filename}","w") do |f|
+    f.puts personal_letter
+  end
+  
+end
+
 
 csv_content.each_with_index do |row,index|
  
@@ -44,13 +56,15 @@ csv_content.each_with_index do |row,index|
  #  personal_letter.gsub!('LEGISLATORS',legistring)
  personal_letter = erb_template.result(binding)
  
+
  Dir.mkdir("output") unless Dir.exists? "output"
  
- filename = "thanks_#{index}.html"
- 
+ filename = "ouput/thanks_#{index}.html"
+
  File.open("output/#{filename}","w") do |f|
    f.puts personal_letter
  end
+
   
 end
 
