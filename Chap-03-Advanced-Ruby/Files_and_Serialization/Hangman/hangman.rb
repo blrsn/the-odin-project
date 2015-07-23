@@ -18,8 +18,22 @@ class Hangman
   end
 
   def get_code
-     puts "You have #{@guess_count} guesses left. Enter your guess "
-     gets.chomp.downcase
+    inp = ""
+    
+    loop do
+     puts "You have #{@guess_count} guesses left. Enter 'save' to save game "
+     loop do
+       inp = gets.chomp.downcase
+       break if inp.match /save/
+       break if inp.match /^[a-z]{1}$/
+       puts "invalid entry. Regex potrukom"
+     end
+     
+     break if @wrong_guess.empty?
+     break if @wrong_guess.none? {|hist| hist== inp}
+     puts "Oops. You have already entered '#{inp}'"
+    end
+    inp
   end
 
   def check_code
@@ -89,7 +103,7 @@ class Hangman
       match_arr = check_code
       # p match_arr
       disp_change(match_arr)
-      puts "wrong guesses so far: #{@wrong_guess.join(" ")}" if !(@wrong_guess.empty?)
+      puts "misses: #{@wrong_guess.join(" ")}" if !(@wrong_guess.empty?)
       break if game_over?(@disp_arr)
     end
   end
