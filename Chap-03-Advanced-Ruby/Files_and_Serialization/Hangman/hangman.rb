@@ -1,7 +1,28 @@
-class Hangman
+require 'rubygems'
+require 'nokogiri'
+require 'open-uri'
 
+
+class Hangman
   
-  def initialize
+  
+  
+  def clue
+    @path = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/#{@my_code}?key=4adb8fce-4f98-49c1-8f57-95ba72ceb9b1"
+    puts "Retrieving clue...Please wait"
+    # puts @path
+    doc = Nokogiri::HTML(open(@path))
+    arr =  doc.css('dt')
+    # puts arr
+    puts "*"*30
+    arr.each_with_index do |desc,ind| 
+      puts "#{ind+1}. #{desc.text[1..-1]}\n\n"
+      break if ind > 8
+    end
+    puts "*"*30
+  end
+  
+  def reinitialize
     @all_lines = File.readlines "wordlist.txt"
     @guess_count = 8
     @wrong_guess = []
@@ -21,9 +42,10 @@ class Hangman
     inp = ""
     
     loop do
-     puts "You have #{@guess_count} guesses left. Enter 'save' to save game "
+     puts "You have #{@guess_count} guesses left. Enter 'save' to save game,'clue' for clue "
      loop do
        inp = gets.chomp.downcase
+       break if inp.match /clue/
        break if inp.match /save/
        break if inp.match /^[a-z]{1}$/
        puts "invalid entry. Regex potrukom"
@@ -82,7 +104,7 @@ class Hangman
        @my_code = load[0]
        @disp_arr = load[1].split('')
        @guess_count = load[2].to_i
-       @wrong_guess = load[3].split
+       @wrong_guess = load[3].split('')
        
        saved_lines.delete_at(load_val-1)
        File.open("saved.csv","w") do |file|
@@ -100,11 +122,18 @@ class Hangman
         save_game
         break
       end
+      if @guess == "clue"
+        clue
+        next
+      end
       match_arr = check_code
       # p match_arr
       disp_change(match_arr)
-      puts "misses: #{@wrong_guess.join(" ")}" if !(@wrong_guess.empty?)
+      
       break if game_over?(@disp_arr)
+      
+      puts "misses: #{@wrong_guess.join(" ")}" if !(@wrong_guess.empty?)
+       
     end
   end
 
@@ -113,35 +142,56 @@ class Hangman
   def play
     # run starts
     puts "Welcome to Hangman"
-    puts "1.Start a new game"
-    puts "2.Load a saved game"
     
-    input = gets.chomp
-    case input
-    when "1"
+    loop do
+      reinitialize
       
-      @my_code = sel_code
-      p "Crack the word"
+      puts "1.Start a new game"
+      puts "2.Load a saved game"
+      puts "3.Exit"
+      
+      input = gets.chomp
+      case input
+      when "1"
+      
+        @my_code = sel_code
+        p "Crack the word"
 
-      @disp_arr = []
-      @my_code.length.times{|t| @disp_arr << "_"}
+        @disp_arr = []
+        @my_code.length.times{|t| @disp_arr << "_"}
 
-      puts "Word set. Time to play the game!!"
+        puts "Word set. Find the word using the description"
+        
       
-      game_play
+        game_play
       
+         puts "You won!! You found '#{@my_code}' with #{@guess_count} guesses remaining " if game_over?(@disp_arr)
       
-    when "2"
+        puts "The word is #{@my_code}. Keep tryin!!" if @guess_count == 0
       
-      load_game
+      when "2"
+        
+        reinitialize
       
-      game_play
+        load_game
       
+        game_play
       
+         puts "You won!! You found '#{@my_code}' with #{@guess_count} guesses remaining " if game_over?(@disp_arr)
       
-    end 
+        puts "The word is #{@my_code}. Keep tryin!!" if @guess_count == 0
+        
+      when "3"
+        
+        break
+        
+      else 
+        puts "Please enter a valid choice"
+      
+      end 
     
-      
+    end
+    
   end
 
 end
