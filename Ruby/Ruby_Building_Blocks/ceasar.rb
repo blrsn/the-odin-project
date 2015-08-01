@@ -60,6 +60,6 @@ def ceasar(str,shift)
 end
 
 puts ceasar("What a string!",5)
-
+puts  ceasar("zzz",24)
   
   
