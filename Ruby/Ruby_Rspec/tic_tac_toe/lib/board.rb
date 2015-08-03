@@ -4,7 +4,6 @@ module RubyTicTacToe
 # grid defaults to  [[cell.cell,cell],[cell.cell,cell],[cell.cell,cell]]
 # Board has a no. of behaviours or methods  
 
-
   class Board 
     attr_accessor :grid
     

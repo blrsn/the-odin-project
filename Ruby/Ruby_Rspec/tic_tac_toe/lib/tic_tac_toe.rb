@@ -8,7 +8,7 @@ p1 = gets.chomp.capitalize
 
 while true
  
-puts "Enter your mark. Select from these options ('x' 'o' 'X' 'Y')"
+puts "Enter your mark. Select from these options ('x' 'o' 'X' 'O')"
 m1 = gets.chomp.capitalize
 
 player1 = RubyTicTacToe::Player.new({name: p1,mark: m1})

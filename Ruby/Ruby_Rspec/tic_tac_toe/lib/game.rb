@@ -22,7 +22,7 @@ module RubyTicTacToe
   end
   
   def solicit_move    #--asks current player to enter a number
-    "#{current_player.name}: Enter a number between 1 and 9 to make your move"
+    "#{current_player.name}  '#{current_player.mark}': Enter a number between 1 and 9 to make your move"
   end
   
   def get_move(human_move = gets.chomp) #--gets the fixnum between 1 to 9 and calls human_move_to_coordinatess
@@ -62,6 +62,7 @@ module RubyTicTacToe
       puts solicit_move # asks user for a move
       x, y = get_move # get_move returns co-ordinates
       
+      sleep 0.3
       if x == false || board.get_cell(x,y).occupied?   
         puts "The box you entered is already occupied."
         puts "Please enter a valid input"
