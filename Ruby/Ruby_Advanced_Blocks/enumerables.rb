@@ -79,16 +79,17 @@ module Enumerable
     # 3 cases
     # With block - counts the number of times the condition in block becomes true
     # With argument - counts number of elements of the array which are equal to arg
-    # Nothing - gives length of the array 
+    # Nothing - gives length of the array
+    #there is no condition when both arg and block are given 
     count = 0
     self.each do |ind|
     
-      if block_given?
+      if block_given? # when block is given
         count += 1 if yield(ind)
-      elsif arg == nil
+      elsif arg == nil  # for no argument
         count += 1
       else
-        count +=1 if ind == arg
+        count +=1 if ind == arg # for with arg only
       end
     
     end
@@ -108,7 +109,7 @@ module Enumerable
     ans
   end
   
-  def my_map_proc(code)
+  def my_map_proc(code) # proc is just a reusable block
     ans = []
     self.my_each do |ind|
       ans << code.call(ind)
@@ -160,7 +161,10 @@ if __FILE__ == $0
 #   p a.my_none?
 #   p "---"
 #   p a.my_map {|t| t+4}
+
+# plus 4 here is a proc...proc is just a reusable block
 #   plus4 = Proc.new do |t| t+4 end
+
 #   p a.my_map_proc(plus4)
 #   p a.my_count
 #   p a.my_inject(1) {|sum,n| sum * n}

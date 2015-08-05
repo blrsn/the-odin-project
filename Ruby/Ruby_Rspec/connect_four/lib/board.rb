@@ -1,79 +1,94 @@
-require_relative 'cell'
-
-BLANK = "\u26AA"
-BLACK = "\u26AB"
-WHITE = "\u26BD"
+require 'pry'
 
 class Board
-
-  attr_accessor :grid
   
-  def initialize
-    @grid = Array.new(6){Array.new(7){Cell.new}}
-    grid.each {|p| p.each {|g| g.value = BLANK}}
+  DIRECTIONS = [[1,0],[0,1],[1,1],[-1,1],[-1,0],[0,-1],[-1,-1],[1,-1]]
+  
+  attr_accessor :columns
+  def initialize(args = {})
+    @width = args[:width] || 7
+    @height = args[:height] || 6
+    board_str = args.fetch(:board,nil)
     
-  end
-  
-  def show_grid
-    puts "1  2  3  4  5  6  7"
-    @grid.each do |row|
-      row.each do |col|
-        print "#{col.value}  "
-        $stdout.flush
-      end
-      puts ""
-    end
-  end  
-  
-  def set_value(col,value)
-    col = col.to_i - 1
-
-    row = find_row(col)
-    if row >= 0
-      grid[row][col].value = value
-      true
-    else
-      false
-    end
-  end
-
-  def find_row(col)
-    row = 5
-    while row >= 0
-      if grid[row][col].value == "\u26AA" 
-         break
-       else
-         row -= 1
-       end
-    end
-    row
-  end
-
-end
-
-  # def win?(r,c,value)
-  #   row = r
-  #   col = c
-  #
-  #   row_limit = 5
-  #   col_limit = 6
-  #
-  #   # straight 4 conditions
-  # end
-  #
-  # def possible_4(r,c)
-  #
+    if board_str
+      @columns = Array.new(@width){Array.new(@height) { nil }}
       
-    
-    
-    
+      #setting up board using board value supplied
+      board_arr = board_str.split("").map {|row| row.split('')}
+      binding.pry
+      
+      board_arr = board_arr.transpose
+      
+      @columns = @columns.map.each_with_index do |col,index|
+        board_arr[index].select {|p| p != " " }
+      end
+    else
+      @columns = Array.new(@width){ [] }
+      
+    end
+    # puts @columns
+  end
   
 
-if __FILE__ == $0
-  board = Board.new
+  def place!(col,piece)
+    @columns[col].push(piece)
+  end
   
-  board.grid[2][3].value = BLACK
-  board.grid[5][0].value = WHITE
-
-  board.show_grid
+  def to_s
+    table = (@height - 1).downto(0).map do |row|
+      ' ' + @columns.map {|column| column[row] ? column[row] : "\u26AA"}.join(' ') + ' '
+    end.join("\n")
+    table + "\n " + (0...@width).inject('') {|sum,num| sum + " #{num.to_s}"} + " \n"
+  end
+  
+  def line(col,row,direction)
+    if cell(col,row).nil?
+      return false
+    else
+     visited = [cell(col,row)] 
+     
+       3.times do
+         col += direction.first
+         row += direction.last
+         visited << cell(col,row)
+      end
+    end
+    
+    return visited.first if visited.all? {|cell| cell == (visited.first)}
+  end
+      
+      
+  def cell(col,row)
+    return nil if col < 0 || col >= @width || row < 0 || row >= @height
+    @columns[col][row]
+  end 
+  
+  def winner
+    (0..@height).each do |row|
+      (0..@width).each do |col|
+        DIRECTIONS.each do |dir|
+          winner = line(row,col,dir)
+          return winner if winner
+        end
+      end
+    end
+    nil
+  end
+  
+  
+  
 end
+
+
+
+# if __FILE__ == $0
+#   board = Board.new
+#   puts "column array #{board.columns}"
+#   puts board.to_s
+#   board.place!(0,'x')
+#   board.place!(0,'x')
+#   board.place!(1,'y')
+#   board.place!(1,'y')
+#   p board.columns
+#
+# end
